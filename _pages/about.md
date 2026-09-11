@@ -11,7 +11,7 @@ profile:
   more_info: ""
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: false # includes social icons at the bottom of the page
+social: true # includes social icons at the bottom of the page
 
 announcements:
   enabled: true # includes a list of news items
@@ -24,6 +24,6 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Yixiao Qian is a PhD student in the College of Control Science and Engineering at Zhejiang University, advised by Shengze Cai and Chao Xu.
+Yixiao Qian is a PhD student in the College of Control Science and Engineering at Zhejiang University, advised by Prof. Shengze Cai and Prof. Chao Xu.
 
 Yixiao received a bachelor's degree from the School of Mathematical Sciences at Zhejiang University.
