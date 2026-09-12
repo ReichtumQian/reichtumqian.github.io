@@ -1,0 +1,13 @@
+// Local TTF faces are defined in assets/css/ysabeau.css.
+// Use inheritance so mathematical notation, icons, and code keep their fonts.
+:root {
+  --site-font-family: "Ysabeau", "Segoe UI", sans-serif;
+}
+
+body {
+  font-family: var(--site-font-family);
+}
+
+ninja-keys {
+  --ninja-font-family: var(--site-font-family);
+}

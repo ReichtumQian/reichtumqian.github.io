@@ -4,7 +4,7 @@
 
 title: blank # the website title (if blank, full name will be used instead)
 first_name: Yixiao
-middle_name: 
+middle_name:
 last_name: Qian
 contact_note: ""
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
@@ -534,7 +534,8 @@ third_party_libraries:
     version: "5.5.0"
   google_fonts:
     url:
-      fonts: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&display=swap"
+      # The theme uses this hook for the site font stylesheet.
+      fonts: "/assets/css/ysabeau.css"
   highlightjs:
     integrity:
       css:
