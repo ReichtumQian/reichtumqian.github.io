@@ -1,0 +1,164 @@
+\documentclass[tikz,border=3pt]{standalone}
+
+\usetikzlibrary{arrows.meta,calc,positioning}
+
+\begin{document}
+\definecolor{scanorange}{HTML}{E67E22}
+\definecolor{stateyellow}{HTML}{E5B800}
+\definecolor{stateblue}{HTML}{5576C2}
+\definecolor{writegreen}{HTML}{6AA84F}
+\definecolor{stategray}{HTML}{B8B8B8}
+\definecolor{smaaccent}{HTML}{3D8B85}
+
+\begin{tikzpicture}[
+    tokenrow/.style={
+        draw=black,
+        line width=0.75pt,
+        minimum width=1.92cm,
+        minimum height=0.48cm,
+        inner sep=0pt,
+        fill=white
+    },
+    boundary/.style={
+        draw=black,
+        dashed,
+        line width=0.8pt,
+        minimum width=0.38cm,
+        minimum height=0.82cm,
+        inner sep=0pt,
+        fill=stategray!22
+    },
+    memorybox/.style={
+        draw=black,
+        dashed,
+        line width=0.8pt,
+        minimum width=1.45cm,
+        minimum height=0.48cm,
+        inner sep=0pt,
+        font=\scriptsize,
+        text=writegreen,
+        fill=stategray!22
+    },
+    decodedkey/.style={
+        draw=stateblue,
+        line width=0.7pt,
+        minimum width=0.72cm,
+        minimum height=0.44cm,
+        inner sep=0pt,
+        font=\tiny,
+        fill=stateblue!13
+    },
+    decodedvalue/.style={
+        draw=scanorange,
+        line width=0.7pt,
+        minimum width=0.72cm,
+        minimum height=0.44cm,
+        inner sep=0pt,
+        font=\tiny,
+        fill=scanorange!11
+    },
+    smabox/.style={
+        draw=smaaccent,
+        rounded corners=1.5pt,
+        line width=0.8pt,
+        minimum width=6.10cm,
+        minimum height=0.58cm,
+        align=center,
+        font=\scriptsize,
+        fill=smaaccent!8
+    },
+    intra/.style={-{Straight Barb}, draw=scanorange, line width=1.15pt},
+    write/.style={-{Straight Barb}, draw=writegreen, line width=1.15pt},
+    read/.style={-{Straight Barb}, draw=stateblue, line width=1.15pt},
+    scan/.style={-{Straight Barb}, draw=stateyellow, line width=1.15pt},
+    smaflow/.style={-{Straight Barb}, draw=smaaccent, line width=1.15pt},
+    rowlabel/.style={font=\small\bfseries, anchor=east},
+    rowsymbol/.style={font=\small, anchor=west, text=black!78},
+    paneltitle/.style={font=\small\bfseries}
+]
+    \node[paneltitle] at (5.15,2.60) {(a) Mamba-2 chunkwise SSD computation};
+
+    \node[rowlabel] at (0.95,1.90) {Outputs};
+    \node[rowsymbol] at (1.08,1.90) {$Y$};
+    \node[rowlabel, text=black!42] at (0.85,0.88) {States};
+    \node[rowsymbol, text=black!42] at (0.98,0.88) {$H_{[c]}$};
+    \node[rowlabel] at (0.95,0) {Inputs};
+    \node[rowsymbol] at (1.08,0) {$X$};
+
+    \foreach \x/\name in {2.75/one,5.65/two,8.55/three} {
+        \node[tokenrow] (x\name) at (\x,0) {};
+        \node[tokenrow] (y\name) at (\x,1.90) {};
+        \foreach \shift in {-0.48,0,0.48} {
+            \draw[line width=0.65pt]
+                ([xshift=\shift cm]x\name.south) --
+                ([xshift=\shift cm]x\name.north);
+            \draw[line width=0.65pt]
+                ([xshift=\shift cm]y\name.south) --
+                ([xshift=\shift cm]y\name.north);
+        }
+    }
+
+    \node[boundary] (hone) at (4.20,0.95) {};
+    \node[boundary] (htwo) at (7.10,0.95) {};
+    \node[boundary] (hthree) at (10.00,0.95) {};
+
+    \node[font=\scriptsize, text=black!62, below=2pt of xone] {chunk $1$};
+    \node[font=\scriptsize, text=black!62, below=2pt of xtwo] {chunk $2$};
+    \node[font=\scriptsize, text=black!62, below=2pt of xthree] {chunk $3$};
+
+    \draw[intra] (2.75,0.42) -- (2.75,1.48);
+    \draw[intra] (5.65,0.42) -- (5.65,1.48);
+    \draw[intra] (8.55,0.42) -- (8.55,1.48);
+
+    \draw[write]
+        (3.82,0.05) to[out=0,in=-90] (4.20,0.43);
+    \draw[write]
+        (6.72,0.05) to[out=0,in=-90] (7.10,0.43);
+    \draw[write]
+        (9.62,0.05) to[out=0,in=-90] (10.00,0.43);
+    \node[font=\scriptsize, text=writegreen, anchor=north]
+        at (4.17,-0.02) {$\Delta H_{[1]}$};
+    \node[font=\scriptsize, text=writegreen, anchor=north]
+        at (7.07,-0.02) {$\Delta H_{[2]}$};
+    \node[font=\scriptsize, text=writegreen, anchor=north]
+        at (9.97,-0.02) {$\Delta H_{[3]}$};
+
+    \draw[read]
+        (4.20,1.47) to[out=90,in=180] (4.58,1.90);
+    \draw[read]
+        (7.10,1.47) to[out=90,in=180] (7.48,1.90);
+
+    \draw[scan]
+        (4.52,0.49) .. controls (5.05,0.34) and (6.25,0.34) .. (6.78,0.49);
+    \draw[scan]
+        (7.42,0.49) .. controls (7.95,0.34) and (9.15,0.34) .. (9.68,0.49);
+
+    \node[paneltitle] at (14.00,2.60) {(b) State-memory attention};
+
+    \node[memorybox] (mone) at (11.70,0) {$\Delta H_{[1]}$};
+    \node[memorybox] (mtwo) at (14.00,0) {$\Delta H_{[2]}$};
+    \node[memorybox] (mthree) at (16.30,0) {$\Delta H_{[3]}$};
+
+    \foreach \memory/\x/\idx in {mone/11.70/1,mtwo/14.00/2,mthree/16.30/3} {
+        \node[decodedkey] (k\idx) at ({\x-0.43},0.84) {$K_{t,\idx}$};
+        \node[decodedvalue] (v\idx) at ({\x+0.43},0.84) {$V_{t,\idx}$};
+
+        \draw[read] ([xshift=-0.43cm]\memory.north) -- (k\idx.south);
+        \draw[intra] ([xshift=0.43cm]\memory.north) -- (v\idx.south);
+        \node[font=\tiny, text=stateblue, anchor=east]
+            at ({\x-0.51},0.49) {$E_t$};
+        \node[font=\tiny, text=scanorange, anchor=west]
+            at ({\x+0.51},0.49) {$C_t$};
+    }
+
+    \node[smabox] (sma) at (14.00,1.65)
+        {\textbf{State-Memory Attention}};
+    \foreach \idx in {1,2,3} {
+        \draw[read] (k\idx.north) -- (k\idx.north |- sma.south);
+        \draw[intra] (v\idx.north) -- (v\idx.north |- sma.south);
+    }
+
+    \draw[smaflow] (sma.north) -- ++(0,0.28);
+
+\end{tikzpicture}
+\end{document}
