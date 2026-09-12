@@ -8,6 +8,12 @@ body {
   font-family: var(--site-font-family);
 }
 
+// With a light body weight, relative bolder resolves to regular weight.
+b,
+strong {
+  font-weight: 700;
+}
+
 ninja-keys {
   --ninja-font-family: var(--site-font-family);
 }
